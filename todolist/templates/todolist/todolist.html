@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>ToDoList</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-center pt-3">
+            <h1>Welcome to <strong><em> ToDoList </em></strong> App.</h1>
+        </div>
+    </div>
+    <div class="row w-100 pt-3">
+        <div class="col-md-3"></div>
+        <div class="col-sm-12 col-md-6 text-center">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="InputTask"></label>
+                    <input type="text" class="form-control" id="InputTask" name="task" placeholder="New Tasks?">
+                    <button type="submit" class="btn btn-info col-lg-2">Add Task</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="row w-100 p-2 text-center">
+             <div class="col-md-3"></div>
+            <div class="col-md-6">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                           <strong>{{ message }}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+             <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="row w-100 pt-sm-3">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th>Task</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if all_tasks %}
+                    {% for tasks in all_tasks %}
+                        {% if tasks.done %}
+                            <tr class="table-success text-center">
+                                <td><del>{{tasks.task}}</del></td>
+                                <td>
+
+                                    <a href="{% url 'todolist:pending_task' tasks.id %}">
+                                    <button type="button" class="btn btn-secondary">Mark this Pending</button></a>
+                                </td>
+                                <td><a href="{% url 'todolist:edit_task' tasks.id %}">
+                                    <button type="button" class="btn btn-success">Edit</button>
+                                </td>
+                                <td><a href="{% url 'todolist:delete_task' tasks.id %}">
+                                    <button type="button" class="btn btn-danger">Delete</button></a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="bg-warning text-center">
+                                <td>{{tasks.task}}</td>
+                                <td>
+
+                                    <a href="{% url 'todolist:complete_task' tasks.id %}">
+                                    <button type="button" class="btn btn-primary">Mark this Completed</button>
+                                    </a>
+                                </td>
+                                <td><a href="{% url 'todolist:edit_task' tasks.id %}">
+                                    <button type="button" class="btn btn-success">Edit</button></a>
+                                </td>
+                                <td><a href="{% url 'todolist:delete_task' tasks.id %}">
+                                    <button type="button" class="btn btn-danger">Delete</button></a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <!-- Paginator -->
+    <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-md-4 bg-light ">
+                <div class="pagination">
+                <span class="step-links">
+                    {% if all_tasks.has_previous %}
+                        <a href="?pg=1">&laquo; first</a>
+                        <a href="?pg={{ all_tasks.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                <span class="current">
+                    Page {{ all_tasks.number }} of {{ all_tasks.paginator.num_pages }}.
+                </span>
+
+                    {% if all_tasks.has_next %}
+                        <a href="?pg={{ all_tasks.next_page_number }}">next</a>
+                        <a href="?pg={{ all_tasks.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

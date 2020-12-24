@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Edit Page</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 text-center w-100 pt-3">
+            <h1>Welcome to <strong><em> Edit </em></strong> Page</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center w-50 pt-3">
+            <h2></h2>
+        </div>
+        {% if task_obj.manager == request.user %}
+        <div class="col-md-12 text-center">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="InputTask"></label>
+                    <input type="text" class="form-control" id="InputTask" name="task" placeholder="{{ task_obj.task }}" value="{{ task_obj.task }}">
+                    <input type="hidden" name="done" value="{{ task_obj.done }}">
+                    <button type="submit" class="btn btn-primary col-md-4">Update Task</button>
+                </div>
+            </form>
+            {% else %}
+            <div class="row">
+                <div class="col-12 d-inline-flex">
+               <center><p class="bg-danger text-white text-center justify-content-center" >Access is restricted, You are <strong>Not</strong> Allowed!</p></center>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

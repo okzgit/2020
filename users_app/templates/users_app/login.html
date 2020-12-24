@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{% load crispy_forms_tags %}
+<title>Login</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center pt-3">
+            <h1>Welcome to <strong><em> Login </em></strong> Page</h1>
+        </div>
+        <div class="col-md-12 text-center pt-3">
+            <div class="col-md-3"></div>
+            <div class="row w-100 p-2 text-center">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 text-center pt-3">
+            <div class="text-center w-100 text-white">
+                <form method="post" class="bg-dark">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary mb-3">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
